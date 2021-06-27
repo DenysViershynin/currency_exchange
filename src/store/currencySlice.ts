@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ICurrencyState } from "../components/utilities/interfaces/interfaces";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { BaseURL } from "../components/utilities/enums/enums";
+import { BaseURLEnum } from "../components/utilities/enums/enums";
 
 const initialState: ICurrencyState = {
   USD: {
@@ -35,7 +35,7 @@ export const getData: any = createAsyncThunk(
   "currencies/getCurrenciesData",
   async () => {
     let promise = new Promise((resolve, reject) => {
-      resolve(axios.get(BaseURL.PrivatBank));
+      resolve(axios.get(BaseURLEnum.PrivatBank));
     });
 
     let result: any = await promise;

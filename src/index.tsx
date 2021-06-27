@@ -5,10 +5,12 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import currencySlice from "./store/currencySlice";
+import exchangeSlice from "./store/exchangeSlice";
 import { Provider } from "react-redux";
 
 const rootReducer = combineReducers({
   main: currencySlice,
+  exchange: exchangeSlice,
 });
 
 const store = configureStore({

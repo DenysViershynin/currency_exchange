@@ -2,7 +2,7 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import { useStyles } from "../../styles/currencyExchangePage.styles";
 import CurrencyTable from "./currencyTable/currencyTable";
-import CurrencyConverter from "../currencyCoverter";
+import CurrencyConverter from "./currencyConverter/currencyCoverter";
 import { useSelector, useDispatch } from "react-redux";
 import { IMainState } from "../utilities/interfaces/interfaces";
 import { useEffect } from "react";
@@ -16,7 +16,6 @@ const CurrencyExchangePage = () => {
   const dispatch = useDispatch();
     
   useEffect(() => {
-    console.log("useEffect[]");
     dispatch(getData());
   }, []);
 
