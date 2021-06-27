@@ -8,17 +8,30 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { useStyles } from "../../../styles/currencyTable.styles";
-import { DisplayEditIconEnum } from "../../utilities/enums";
+import { DisplayEditIconEnum } from "../../utilities/enums/enums";
 import EditIconComponent from "./editIcon";
 import CurrentValue from "./currentValue";
+import { ICurrencyTableData } from "../currencyExchangePage";
 
-const CurrencyTable = () => {
-  const [showCurrencyInput, setShowCurrencyInput] = useState<string[]>(["initial"]);
+interface ICurrencyTable {
+  currencyTableData: ICurrencyTableData;
+}
+
+const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
+  const {
+    usd_uah_buy,
+    usd_uah_sell,
+    eur_uah_buy,
+    eur_uah_sell,
+    btc_usd_buy,
+    btc_usd_sell,
+  } = currencyTableData;
+
+  const [showCurrencyInput, setShowCurrencyInput] = useState<string[]>([
+    "initial",
+  ]);
 
   const classes = useStyles();
-  const createData = (currency: string, buy: number, sell: number) => {
-    return { currency, buy, sell };
-  };
 
   const showEditableIcon = useCallback((event: Event | undefined): void => {
     if (event) {
@@ -52,7 +65,6 @@ const CurrencyTable = () => {
       cell.removeEventListener("mouseenter", showEditableIcon, true);
       cell.removeEventListener("mouseleave", hideEditableIcon, true);
     });
-    console.log('removed');
   }, [showEditableIcon, hideEditableIcon]);
 
   const activateListeners = useCallback(() => {
@@ -60,18 +72,17 @@ const CurrencyTable = () => {
     editableCells.forEach((cell) => {
       cell.addEventListener("mouseenter", showEditableIcon, true);
       cell.addEventListener("mouseleave", hideEditableIcon, true);
-      console.log('added');
     });
-    setShowCurrencyInput(['initial'])
+    setShowCurrencyInput(["initial"]);
     return cleanupListeners;
-  }, [showEditableIcon, hideEditableIcon, cleanupListeners])
+  }, [showEditableIcon, hideEditableIcon, cleanupListeners]);
 
   useEffect(() => {
     activateListeners();
   }, [activateListeners]);
 
   useEffect(() => {
-    if(showCurrencyInput[0] !== 'initial') {
+    if (showCurrencyInput[0] !== "initial") {
       const editableCells = document.querySelectorAll(".editableCell");
       editableCells.forEach((cell) => {
         let cellElement = cell as HTMLElement;
@@ -84,16 +95,26 @@ const CurrencyTable = () => {
         }
         cell.removeEventListener("mouseenter", showEditableIcon, true);
         cell.removeEventListener("mouseleave", hideEditableIcon, true);
-        console.log('removed');
-      })
+      });
     }
   }, [showCurrencyInput, showEditableIcon, hideEditableIcon]);
 
-  const rows = [
-    createData("USD/UAH", 159, 6.0),
-    createData("EUR/UAH", 237, 9.0),
-    createData("BTC/USD", 262, 16.0),
-  ];
+  const getCurrenceTableData: () => {
+    currency: string;
+    buy: number;
+    sell: number;
+  }[] = () => {
+    const createData = (currency: string, buy: number, sell: number) => {
+      return { currency, buy, sell };
+    };
+
+    const rows = [
+      createData("USD/UAH", usd_uah_buy, usd_uah_sell),
+      createData("EUR/UAH", eur_uah_buy, eur_uah_sell),
+      createData("BTC/USD", btc_usd_buy, btc_usd_sell),
+    ];
+    return rows;
+  };
 
   return (
     <>
@@ -107,7 +128,7 @@ const CurrencyTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => {
+            {getCurrenceTableData().map((row) => {
               return (
                 <TableRow key={row.currency}>
                   <TableCell>{row.currency}</TableCell>
@@ -119,8 +140,10 @@ const CurrencyTable = () => {
                           ? true
                           : false
                       }
-                      type={'buy'}
-                      activateEventListeners={() => {activateListeners()}}
+                      type={"buy"}
+                      activateEventListeners={() => {
+                        activateListeners();
+                      }}
                     />
                     <EditIconComponent
                       id={`${row.currency}_Buy`}
@@ -137,8 +160,10 @@ const CurrencyTable = () => {
                           ? true
                           : false
                       }
-                      type={'sell'}
-                      activateEventListeners={() => {activateListeners()}}
+                      type={"sell"}
+                      activateEventListeners={() => {
+                        activateListeners();
+                      }}
                     />
                     <EditIconComponent
                       id={`${row.currency}_Sell`}
