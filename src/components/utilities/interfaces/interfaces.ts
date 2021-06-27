@@ -13,6 +13,4 @@ export interface ISeparateCurrencyState {
   baseCurrency: string;
   buy: string;
   sell: string;
-  usersInputBuy: string;
-  usersInputSell: string;
 }

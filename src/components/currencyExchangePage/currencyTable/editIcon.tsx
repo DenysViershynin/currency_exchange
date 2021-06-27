@@ -1,5 +1,4 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
 import { useStyles } from "../../../styles/currencyTable.styles";
 import EditIcon from "@material-ui/icons/Edit";
 
@@ -12,14 +11,12 @@ const EditIconComponent: React.FC<IEditIconComponent> = ({ clicked, id }) => {
   const classes = useStyles();
 
   return (
-    <Grid
-      container
+    <EditIcon
+      className={classes.editIcon}
       onClick={() => {
         clicked(id);
       }}
-    >
-      <EditIcon className={classes.editIcon} />
-    </Grid>
+    />
   );
 };
 

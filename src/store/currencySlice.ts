@@ -9,24 +9,18 @@ const initialState: ICurrencyState = {
     baseCurrency: "UAH",
     buy: "0",
     sell: "0",
-    usersInputBuy: "0",
-    usersInputSell: "0",
   },
   EUR: {
     currency: "EUR",
     baseCurrency: "UAH",
     buy: "0",
     sell: "0",
-    usersInputBuy: "0",
-    usersInputSell: "0",
   },
   BTC: {
     currency: "BTC",
     baseCurrency: "UAH",
     buy: "0",
     sell: "0",
-    usersInputBuy: "0",
-    usersInputSell: "0",
   },
 };
 

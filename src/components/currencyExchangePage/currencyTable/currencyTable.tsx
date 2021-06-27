@@ -12,6 +12,14 @@ import { DisplayEditIconEnum } from "../../utilities/enums/enums";
 import EditIconComponent from "./editIcon";
 import CurrentValue from "./currentValue";
 import { ICurrencyTableData } from "../currencyExchangePage";
+import {
+  setUSD_buy,
+  setUSD_sell,
+  setEUR_buy,
+  setEUR_sell,
+  setBTC_buy,
+  setBTC_sell,
+} from "../../../store/currencySlice";
 
 interface ICurrencyTable {
   currencyTableData: ICurrencyTableData;
@@ -37,7 +45,7 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
     if (event) {
       let currentElement = event.target as HTMLElement;
       if (currentElement.tagName === "TD") {
-        let editIcon = currentElement.children[1].children[0] as HTMLElement;
+        let editIcon = currentElement.children[1] as HTMLElement;
 
         if (editIcon) {
           editIcon.style.display = DisplayEditIconEnum.INLINE_BLOCK;
@@ -50,7 +58,7 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
     if (event) {
       let currentElement = event.target as HTMLElement;
       if (currentElement.tagName === "TD") {
-        let editIcon = currentElement.children[1].children[0] as HTMLElement;
+        let editIcon = currentElement.children[1] as HTMLElement;
 
         if (editIcon) {
           editIcon.style.display = DisplayEditIconEnum.NONE;
@@ -87,7 +95,7 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
       editableCells.forEach((cell) => {
         let cellElement = cell as HTMLElement;
         if (cellElement.tagName === "TD") {
-          let editIcon = cellElement.children[1].children[0] as HTMLElement;
+          let editIcon = cellElement.children[1] as HTMLElement;
 
           if (editIcon) {
             editIcon.style.display = DisplayEditIconEnum.NONE;
@@ -99,19 +107,40 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
     }
   }, [showCurrencyInput, showEditableIcon, hideEditableIcon]);
 
+  const getCurrentDate = () => {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth() + 1).padStart(2, "0");
+    let yyyy = today.getFullYear();
+
+    return `${dd}.${mm}.${yyyy}`;
+  }
+
+  // useEffect(() => {
+  //   getCurrentDate();
+  // }, []);
+
   const getCurrenceTableData: () => {
     currency: string;
     buy: string;
     sell: string;
+    reducer_buy: (x: string) => void;
+    reducer_sell: (x: string) => void;
   }[] = () => {
-    const createData = (currency: string, buy: string, sell: string) => {
-      return { currency, buy, sell };
+    const createData = (
+      currency: string,
+      buy: string,
+      sell: string,
+      reducer_buy: (x: string) => void,
+      reducer_sell: (x: string) => void
+    ) => {
+      return { currency, buy, sell, reducer_buy, reducer_sell };
     };
 
     const rows = [
-      createData("USD/UAH", usd_uah_buy, usd_uah_sell),
-      createData("EUR/UAH", eur_uah_buy, eur_uah_sell),
-      createData("BTC/USD", btc_usd_buy, btc_usd_sell),
+      createData("USD/UAH", usd_uah_buy, usd_uah_sell, setUSD_buy, setUSD_sell),
+      createData("EUR/UAH", eur_uah_buy, eur_uah_sell, setEUR_buy, setEUR_sell),
+      createData("BTC/USD", btc_usd_buy, btc_usd_sell, setBTC_buy, setBTC_sell),
     ];
     return rows;
   };
@@ -122,14 +151,13 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
         <Table size="medium" aria-label="currency-exchange">
           <TableHead>
             <TableRow>
-              <TableCell>Currency/Current date</TableCell>
+              <TableCell>Currency / {getCurrentDate()}</TableCell>
               <TableCell>Buy</TableCell>
               <TableCell>Sell</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {getCurrenceTableData().map((row) => {
-              
               return (
                 <TableRow key={row.currency}>
                   <TableCell>{row.currency}</TableCell>
@@ -145,6 +173,7 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
                       activateEventListeners={() => {
                         activateListeners();
                       }}
+                      reducer={row.reducer_buy}
                     />
                     <EditIconComponent
                       id={`${row.currency}_Buy`}
@@ -165,6 +194,7 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
                       activateEventListeners={() => {
                         activateListeners();
                       }}
+                      reducer={row.reducer_sell}
                     />
                     <EditIconComponent
                       id={`${row.currency}_Sell`}
