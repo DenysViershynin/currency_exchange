@@ -4,9 +4,11 @@ import { useStyles } from "../../../styles/currentValue.styles";
 import TextField from "@material-ui/core/TextField";
 import DoneIcon from "@material-ui/icons/Done";
 import CloseIcon from "@material-ui/icons/Close";
+import { useSelector, useDispatch } from "react-redux";
+import { setUSD_buy } from "../../../store/currencySlice";
 
 export interface ICurrentValue {
-  value: number;
+  value: string;
   showCurrencyInput: boolean;
   activateEventListeners: () => void;
   type: string;
@@ -18,7 +20,12 @@ const CurrentValue: React.FC<ICurrentValue> = ({
   activateEventListeners,
   type,
 }) => {
+  const dispatch = useDispatch();
+  value = value.replace(/0+$/, "");
   const [showInput, setShowInput] = useState<boolean>(false);
+  const [disabledConfirmation, setDisabledConfirmation] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>('');
+  console.log(disabledConfirmation);
 
   useEffect(() => {
     setShowInput(showCurrencyInput);
@@ -26,9 +33,17 @@ const CurrentValue: React.FC<ICurrentValue> = ({
 
   const classes = useStyles();
 
+  useEffect(() => {
+    if(Number(inputValue) < Number(value) * 0.9 || Number(inputValue) > Number(value) * 1.1) {
+      console.log('error');
+      setDisabledConfirmation(true);
+    } 
+  }, [inputValue])
+
   const handleConfirmation = () => {
     setShowInput(false);
     activateEventListeners();
+    dispatch(setUSD_buy(inputValue));
   };
 
   const handleCancelation = () => {
@@ -41,12 +56,17 @@ const CurrentValue: React.FC<ICurrentValue> = ({
   const input = (
     <>
       <form noValidate autoComplete="off">
-        <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+        <TextField
+          id="outlined-basic"
+          label="Outlined"
+          variant="outlined"
+          onChange={(event) => setInputValue(event.target.value)}
+        />
       </form>
       <DoneIcon
         className={classes.inputIcons}
         fontSize="large"
-        onClick={() => handleConfirmation()}
+        onClick={disabledConfirmation ? () => {} : () => handleConfirmation()}
       />
       <CloseIcon
         className={classes.inputIcons}
@@ -56,9 +76,12 @@ const CurrentValue: React.FC<ICurrentValue> = ({
     </>
   );
 
+  let result: JSX.Element;
+  showInput ? (result = input) : (result = curValue);
+
   return (
     <Grid container direction="row">
-      {showInput ? input : curValue}
+      {result}
     </Grid>
   );
 };

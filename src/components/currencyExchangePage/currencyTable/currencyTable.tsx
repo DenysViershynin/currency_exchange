@@ -101,10 +101,10 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
 
   const getCurrenceTableData: () => {
     currency: string;
-    buy: number;
-    sell: number;
+    buy: string;
+    sell: string;
   }[] = () => {
-    const createData = (currency: string, buy: number, sell: number) => {
+    const createData = (currency: string, buy: string, sell: string) => {
       return { currency, buy, sell };
     };
 
@@ -129,6 +129,7 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
           </TableHead>
           <TableBody>
             {getCurrenceTableData().map((row) => {
+              
               return (
                 <TableRow key={row.currency}>
                   <TableCell>{row.currency}</TableCell>

@@ -11,8 +11,8 @@ export interface ICurrencyState {
 export interface ISeparateCurrencyState {
   currency: string;
   baseCurrency: string;
-  buy: number;
-  sell: number;
-  usersInputBuy: number;
-  usersInputSell: number;
+  buy: string;
+  sell: string;
+  usersInputBuy: string;
+  usersInputSell: string;
 }
