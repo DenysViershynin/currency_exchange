@@ -52,6 +52,7 @@ const CurrencyTable = () => {
       cell.removeEventListener("mouseenter", showEditableIcon, true);
       cell.removeEventListener("mouseleave", hideEditableIcon, true);
     });
+    console.log('removed');
   }, [showEditableIcon, hideEditableIcon]);
 
   const activateListeners = useCallback(() => {
@@ -59,7 +60,9 @@ const CurrencyTable = () => {
     editableCells.forEach((cell) => {
       cell.addEventListener("mouseenter", showEditableIcon, true);
       cell.addEventListener("mouseleave", hideEditableIcon, true);
+      console.log('added');
     });
+    setShowCurrencyInput(['initial'])
     return cleanupListeners;
   }, [showEditableIcon, hideEditableIcon, cleanupListeners])
 
@@ -81,14 +84,15 @@ const CurrencyTable = () => {
         }
         cell.removeEventListener("mouseenter", showEditableIcon, true);
         cell.removeEventListener("mouseleave", hideEditableIcon, true);
+        console.log('removed');
       })
     }
   }, [showCurrencyInput, showEditableIcon, hideEditableIcon]);
 
   const rows = [
     createData("USD/UAH", 159, 6.0),
-    // createData("EUR/UAH", 237, 9.0),
-    // createData("BTC/USD", 262, 16.0),
+    createData("EUR/UAH", 237, 9.0),
+    createData("BTC/USD", 262, 16.0),
   ];
 
   return (

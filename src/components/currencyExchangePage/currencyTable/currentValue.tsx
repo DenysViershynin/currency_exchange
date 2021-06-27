@@ -19,25 +19,22 @@ const CurrentValue: React.FC<ICurrentValue> = ({
   type,
 }) => {
   const [showInput, setShowInput] = useState<boolean>(false);
-  console.log(type, showCurrencyInput);
+
   useEffect(() => {
-    console.log('test');
     setShowInput(showCurrencyInput);
   }, [showCurrencyInput]);
 
   const classes = useStyles();
- 
+
   const handleConfirmation = () => {
-    setShowInput(false)
-    console.log('setShowInput(false)');
-    activateEventListeners()
-  }
+    setShowInput(false);
+    activateEventListeners();
+  };
 
   const handleCancelation = () => {
-    setShowInput(false)
-    console.log('setShowInput(false)');
-    activateEventListeners()
-  }
+    setShowInput(false);
+    activateEventListeners();
+  };
 
   const curValue = <Typography>{value}</Typography>;
 
@@ -46,8 +43,16 @@ const CurrentValue: React.FC<ICurrentValue> = ({
       <form noValidate autoComplete="off">
         <TextField id="outlined-basic" label="Outlined" variant="outlined" />
       </form>
-      <DoneIcon className={classes.inputIcons} fontSize="large" onClick={ () => handleConfirmation() } />
-      <CloseIcon className={classes.inputIcons} fontSize="large" onClick={ () => handleCancelation() } />
+      <DoneIcon
+        className={classes.inputIcons}
+        fontSize="large"
+        onClick={() => handleConfirmation()}
+      />
+      <CloseIcon
+        className={classes.inputIcons}
+        fontSize="large"
+        onClick={() => handleCancelation()}
+      />
     </>
   );
 
