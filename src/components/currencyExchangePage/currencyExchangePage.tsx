@@ -7,10 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { IMainState } from "../utilities/interfaces/interfaces";
 import { useEffect } from "react";
 import { getData } from '../../store/currencySlice';
-
-export interface ICurrencyTableData {
-  [name: string]: string;
-}
+import { ICurrencyTableData } from '../utilities/interfaces/interfaces';
 
 const CurrencyExchangePage = () => {
   const dispatch = useDispatch();
@@ -40,7 +37,7 @@ const CurrencyExchangePage = () => {
   return (
     <Grid container className={classes.currencyExchangePageWrapper}>
       <CurrencyTable currencyTableData={currencyTableData} />
-      <CurrencyConverter />
+      <CurrencyConverter currencyTableData={currencyTableData} />
     </Grid>
   );
 };

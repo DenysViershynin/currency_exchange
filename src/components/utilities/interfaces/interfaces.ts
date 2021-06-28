@@ -25,3 +25,7 @@ export interface IExchange {
   changeCurrencyAmount: string;
   getCurrencyAmount: string;
 };
+
+export interface ICurrencyTableData {
+  [name: string]: string;
+}

@@ -11,7 +11,7 @@ import { useStyles } from "../../../styles/currencyTable.styles";
 import { DisplayEditIconEnum } from "../../utilities/enums/enums";
 import EditIconComponent from "./editIcon";
 import CurrentValue from "./currentValue";
-import { ICurrencyTableData } from "../currencyExchangePage";
+import { ICurrencyTableData } from '../../utilities/interfaces/interfaces';
 import {
   setUSD_buy,
   setUSD_sell,
@@ -115,10 +115,6 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
 
     return `${dd}.${mm}.${yyyy}`;
   }
-
-  // useEffect(() => {
-  //   getCurrentDate();
-  // }, []);
 
   const getCurrenceTableData: () => {
     currency: string;
