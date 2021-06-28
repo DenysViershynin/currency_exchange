@@ -7,7 +7,7 @@ import CurrencyExchangePage from "./components/currencyExchangePage/currencyExch
 
 function App() {
   return (
-    <Grid container>
+    <Grid container className="App">
       <Header />
       <CurrencyExchangePage/>
       <Footer/>

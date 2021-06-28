@@ -6,8 +6,10 @@ export const useStyles = makeStyles(
       display: 'flex',
       width: '900px',
       height: '500px',
-      border: '1px solid black',
       marginBottom: '50px',
+      backgroundColor: '#1d2733',
+      borderRadius: '6px',
+      boxShadow:' 5px 10px 20px #10171e',
     },
     editIcon: {
       display: 'none',
@@ -15,7 +17,14 @@ export const useStyles = makeStyles(
       cursor: 'pointer',
       marginLeft: '10px',
       marginTop: '-7px',
+      color: '#d4d3d3',
     },
+    secondaryFonts: {
+      color: '#749ccc',
+    },
+    fonts: {
+      color: '#e9e9e9',
+    }
   }),
   {
     name: "currencyTable",

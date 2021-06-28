@@ -1,10 +1,8 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
-import {
-    setChangeCurrencyAmount,
-} from "../../../store/exchangeSlice";
-import { setSwapTrue } from '../../../store/swapCurrenciesSlice'
+import { setChangeCurrencyAmount } from "../../../store/exchangeSlice";
+import { setSwapTrue } from "../../../store/swapCurrenciesSlice";
 
 interface IArrowIconComponent {
   changeCurrencyAmount: string;
@@ -15,7 +13,7 @@ const ArrowIconComponent: React.FC<IArrowIconComponent> = ({
   changeCurrencyAmount,
   getCurrencyAmount,
 }) => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const swapValues = () => {
     console.log("clicked", changeCurrencyAmount, getCurrencyAmount);
     dispatch(setSwapTrue());

@@ -9,24 +9,24 @@ const initialState: ICurrencyState = {
     baseCurrency: "UAH",
     buy: "0",
     sell: "0",
-    usersModifiedBuy: '0',
-    usersModifiedSell: '0',
+    usersModifiedBuy: "0",
+    usersModifiedSell: "0",
   },
   EUR: {
     currency: "EUR",
     baseCurrency: "UAH",
     buy: "0",
     sell: "0",
-    usersModifiedBuy: '0',
-    usersModifiedSell: '0',
+    usersModifiedBuy: "0",
+    usersModifiedSell: "0",
   },
   BTC: {
     currency: "BTC",
     baseCurrency: "UAH",
     buy: "0",
     sell: "0",
-    usersModifiedBuy: '0',
-    usersModifiedSell: '0',
+    usersModifiedBuy: "0",
+    usersModifiedSell: "0",
   },
 };
 
@@ -43,6 +43,16 @@ export const getData: any = createAsyncThunk(
     let promise = new Promise((resolve, reject) => {
       resolve(axios.get(BaseURLEnum.PrivatBank));
     });
+
+    if (localStorage.getItem("numberOfRequests") === null) {
+      localStorage.setItem("numberOfRequests", "1");
+    } else {
+      let counter = localStorage.getItem("numberOfRequests");
+      if (counter && counter !== '4') {
+        counter = (Number(counter) + 1).toString();
+        localStorage.setItem("numberOfRequests", `${counter}`);
+      }
+    }
 
     let result: any = await promise;
     return result.data;
@@ -92,4 +102,11 @@ const currencySlice = createSlice({
 });
 
 export default currencySlice.reducer;
-export const { setUSD_buy, setUSD_sell, setEUR_buy, setEUR_sell, setBTC_buy, setBTC_sell } = currencySlice.actions;
+export const {
+  setUSD_buy,
+  setUSD_sell,
+  setEUR_buy,
+  setEUR_sell,
+  setBTC_buy,
+  setBTC_sell,
+} = currencySlice.actions;

@@ -5,10 +5,11 @@ export const useStyles = makeStyles(
     currencyExchangePageWrapper: {
       display: 'flex',
       flexDirection: 'column',
-      height: "100vh - 200px",
+      height: 'fit-content',
+      width: 'fit-content',
       justifyContent: "center",
       alignItems: "center",
-      border: "1px solid black",
+      margin: '0 auto',
     },
   }),
   {

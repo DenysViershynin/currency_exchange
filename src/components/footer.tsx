@@ -6,7 +6,7 @@ const Footer = () => {
     const classes = useStyles();
     return (
         <Grid container className={classes.footerWrapper}>
-            <Typography>2020 all rights reserved</Typography>
+            <Typography className={classes.fonts}>2020 all rights reserved</Typography>
         </Grid>
     )
 }

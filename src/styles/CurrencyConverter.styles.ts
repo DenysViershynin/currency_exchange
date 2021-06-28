@@ -4,11 +4,10 @@ export const useStyles = makeStyles(
   () => ({
     CurrencyConverterWrapper: {
       display: 'flex',
-      height: "200px",
-      width: '900px',
+      height: "fit-content",
+      width: 'fit-content',
       justifyContent: "center",
       alignItems: "center",
-      border: "1px solid black",
     },
     
   }),

@@ -6,7 +6,10 @@ export const useStyles = makeStyles(
       height: "100px",
       justifyContent: "center",
       alignItems: "center",
-      border: "1px solid black",
+      backgroundColor: '#222e3c',
+    },
+    fonts: {
+      color: '#e9e9e9',
     },
   }),
   {

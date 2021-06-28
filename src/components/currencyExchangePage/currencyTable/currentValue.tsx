@@ -11,7 +11,6 @@ export interface ICurrentValue {
   originalValue: string;
   showCurrencyInput: boolean;
   activateEventListeners: () => void;
-  type: string;
   reducer: (val: string) => void;
 }
 
@@ -19,7 +18,6 @@ const CurrentValue: React.FC<ICurrentValue> = ({
   value,
   showCurrencyInput,
   activateEventListeners,
-  type,
   reducer,
   originalValue,
 }) => {
@@ -64,9 +62,9 @@ const CurrentValue: React.FC<ICurrentValue> = ({
     activateEventListeners();
   };
 
-  const curValue = <Typography>{value}</Typography>;
+  const curValue = <Typography className={classes.fonts}>{value}</Typography>;
 
-  const input = (
+  const input: JSX.Element = (
     <div style={{
       display: 'flex',
     }}>
@@ -79,12 +77,17 @@ const CurrentValue: React.FC<ICurrentValue> = ({
         }}
       >
         <TextField
+          className={classes.root}
           error={disabledConfirmation ? true : false}
           id="outlined-basic"
+          color='primary'
           label={disabledConfirmation ? "Error" : "Editing currency"}
           variant="outlined"
           onChange={(event) => setInputValue(event.target.value)}
           defaultValue={value}
+          inputProps={{
+            color: '#e9e9e9',
+          }}
         />
       </form>
       <DoneIcon
@@ -93,7 +96,7 @@ const CurrentValue: React.FC<ICurrentValue> = ({
         onClick={disabledConfirmation ? () => {} : () => handleConfirmation()}
         style={{
           color: "green",
-          backgroundColor: disabledConfirmation ? "grey" : "white",
+          backgroundColor: disabledConfirmation ? "#151e27" : "#1d2733",
         }}
       />
       <CloseIcon

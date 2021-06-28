@@ -20,6 +20,7 @@ import {
   setBTC_buy,
   setBTC_sell,
 } from "../../../store/currencySlice";
+import { Typography } from "@material-ui/core";
 
 interface ICurrencyTable {
   currencyTableDataModified: ICurrencyTableData;
@@ -161,16 +162,16 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableDataModified, cu
         <Table size="medium" aria-label="currency-exchange">
           <TableHead>
             <TableRow>
-              <TableCell>Currency / {getCurrentDate()}</TableCell>
-              <TableCell>Buy</TableCell>
-              <TableCell>Sell</TableCell>
+              <TableCell><Typography className={classes.secondaryFonts}>Currency / {getCurrentDate()}</Typography></TableCell>
+              <TableCell><Typography className={classes.secondaryFonts}>Buy</Typography></TableCell>
+              <TableCell><Typography className={classes.secondaryFonts}>Sell</Typography></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {getCurrenceTableData().map((row) => {
               return (
                 <TableRow key={row.currency}>
-                  <TableCell>{row.currency}</TableCell>
+                  <TableCell><Typography className={classes.secondaryFonts}>{row.currency}</Typography></TableCell>
                   <TableCell className="editableCell">
                     <CurrentValue
                       originalValue={row.originalBuyValue}
@@ -180,7 +181,6 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableDataModified, cu
                           ? true
                           : false
                       }
-                      type={"buy"}
                       activateEventListeners={() => {
                         activateListeners();
                       }}
@@ -202,7 +202,6 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableDataModified, cu
                           ? true
                           : false
                       }
-                      type={"sell"}
                       activateEventListeners={() => {
                         activateListeners();
                       }}
