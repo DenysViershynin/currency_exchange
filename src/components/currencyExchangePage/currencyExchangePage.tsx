@@ -20,7 +20,6 @@ const CurrencyExchangePage = () => {
 
   function getErrorValue() {
     const reqCounter = localStorage.getItem("numberOfRequests");
-    console.log(reqCounter);
     if (reqCounter && reqCounter === "4") {
       return true;
     } else {
@@ -36,12 +35,6 @@ const CurrencyExchangePage = () => {
       }, 2000)
     }
   }, [errorState])
-
-  if (errorState) {
-    console.log("test");
-  }
-
-  console.log(errorState);
 
   const usd_uah_buy = useSelector((state: IMainState) => state.main.USD.buy);
   const usd_uah_sell = useSelector((state: IMainState) => state.main.USD.sell);

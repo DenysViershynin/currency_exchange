@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ICurrencyState } from "../components/utilities/interfaces/interfaces";
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios from "axios";
 import { BaseURLEnum } from "../components/utilities/enums/enums";
 
 const initialState: ICurrencyState = {
@@ -29,13 +29,6 @@ const initialState: ICurrencyState = {
     usersModifiedSell: "0",
   },
 };
-
-// interface Ilol {
-//   ccy: string;
-//   base_ccy: string;
-//   buy: number;
-//   sale: number;
-// }
 
 export const getData: any = createAsyncThunk(
   "currencies/getCurrenciesData",

@@ -4,8 +4,8 @@ export const useStyles = makeStyles(
   () => ({
     tableWrapper: {
       display: 'flex',
-      width: '900px',
-      height: '500px',
+      maxWidth: '900px',
+      height: '350px',
       marginBottom: '50px',
       backgroundColor: '#1d2733',
       borderRadius: '6px',
@@ -20,11 +20,14 @@ export const useStyles = makeStyles(
       color: '#d4d3d3',
     },
     secondaryFonts: {
-      color: '#749ccc',
+      color: '#87abd5',
     },
     fonts: {
       color: '#e9e9e9',
-    }
+    },
+    tableCell: {
+      maxWidth: '70px',
+    },
   }),
   {
     name: "currencyTable",
