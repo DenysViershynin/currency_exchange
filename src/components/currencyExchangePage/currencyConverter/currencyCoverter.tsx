@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Grid } from "@material-ui/core";
 import { useStyles } from "../../../styles/currencyConverter.styles";
 import ChangeGetInput from "./changeGetInput";
-import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
+import ArrowIconComponent from './arrowIconComponent';
 import { InputTypeEnum } from "../../utilities/enums/enums";
 import { ICurrencyExchange } from "../../utilities/interfaces/interfaces";
+import { ISwapCurrencies } from "../../utilities/interfaces/interfaces";
 import { ICurrencyTableData } from "../../utilities/interfaces/interfaces";
 
 interface ICurrencyConverter {
@@ -15,15 +16,6 @@ interface ICurrencyConverter {
 const CurrencyConverter: React.FC<ICurrencyConverter> = ({
   currencyTableData,
 }) => {
-  const {
-    usd_uah_buy,
-    usd_uah_sell,
-    eur_uah_buy,
-    eur_uah_sell,
-    btc_usd_buy,
-    btc_usd_sell,
-  } = currencyTableData;
-
   const [currenciesRates, setCurrenciesRates] =
     useState<ICurrencyTableData>(currencyTableData);
 
@@ -45,6 +37,8 @@ const CurrencyConverter: React.FC<ICurrencyConverter> = ({
   const getCurrencyAmount = useSelector(
     (state: ICurrencyExchange) => state.exchange.getCurrencyAmount
   );
+  const swapCurrencies = useSelector((state: ISwapCurrencies) => state.swapCurrencies.swapCurrencies);
+  const focusValue = useSelector((state: ISwapCurrencies) => state.swapCurrencies.focus);
 
   return (
     <Grid container className={classes.CurrencyConverterWrapper}>
@@ -52,8 +46,10 @@ const CurrencyConverter: React.FC<ICurrencyConverter> = ({
         type={InputTypeEnum.Change} 
         changeCurrencyAmount={changeCurrencyAmount}
         getCurrency={getCurrency} 
-        currencyTableData={currencyTableData} />
-      <CompareArrowsIcon fontSize="large" />
+        currencyTableData={currencyTableData}
+        swapCurrencies={swapCurrencies}
+        focusValue={focusValue} />
+      <ArrowIconComponent changeCurrencyAmount={changeCurrencyAmount} getCurrencyAmount={getCurrencyAmount} />
       <ChangeGetInput 
         type={InputTypeEnum.Get} 
         changeCurrency={changeCurrency}

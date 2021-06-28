@@ -5,7 +5,7 @@ export const useStyles = makeStyles(
     currencyExchangePageWrapper: {
       display: 'flex',
       flexDirection: 'column',
-      height: "90vh",
+      height: "100vh - 200px",
       justifyContent: "center",
       alignItems: "center",
       border: "1px solid black",

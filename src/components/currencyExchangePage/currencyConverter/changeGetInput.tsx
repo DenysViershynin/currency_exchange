@@ -13,6 +13,7 @@ import {
   setChangeCurrency,
 } from "../../../store/exchangeSlice";
 import { ICurrencyTableData } from "../../utilities/interfaces/interfaces";
+import { setSwapFalse, setFocusTrue } from '../../../store/swapCurrenciesSlice'
 
 interface IChangeGetInput {
   type: string;
@@ -21,6 +22,8 @@ interface IChangeGetInput {
   getCurrency?: string;
   changeCurrencyAmount?: string;
   changeCurrency?: string;
+  swapCurrencies?: boolean;
+  focusValue?: boolean;
 }
 
 const ChangeGetInput: React.FC<IChangeGetInput> = ({
@@ -30,6 +33,8 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
   getCurrency,
   changeCurrencyAmount,
   changeCurrency,
+  swapCurrencies,
+  focusValue,
 }) => {
   const {
     usd_uah_buy,
@@ -44,8 +49,15 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
   const [chosenCurrency, setChosenCurrency] = useState<string>("");
   const [inputValue, setInputValue] = useState<string>("");
   const [focused, setFocused] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
-  console.log(chosenCurrency);
+  useEffect(() => {
+    if (/[^0-9.]/.test(inputValue)) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+  }, [inputValue]);
 
   useEffect(() => {
     if (type === InputTypeEnum.Change && changeCurrency) {
@@ -54,6 +66,12 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
       setChosenCurrency(getCurrency);
     }
   }, [getCurrency, changeCurrency])
+
+  useEffect(() => {
+    if(type === InputTypeEnum.Change && focusValue) {
+      setFocused(true);
+    }
+  }, [focusValue])
 
   const onFocus = useCallback(() => {
     setFocused(true);
@@ -299,8 +317,8 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
       changeCurrency === "UAH" &&
       btc_usd_buy !== "0"
     ) {
-      let amountInUSD = Number(inputValue) * Number(btc_usd_sell) + "";
-      let amountInUAH = Number(amountInUSD) * Number(usd_uah_sell) + "";
+      let amountInUSD = (Number(inputValue) * Number(btc_usd_sell)).toFixed(2) + "";
+      let amountInUAH = (Number(amountInUSD) * Number(usd_uah_sell)).toFixed(2) + "";
       dispatch(setChangeCurrencyAmount(amountInUAH));
     } else if (
       chosenCurrency === "EUR" &&
@@ -350,15 +368,13 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
   }
 
   const showExchangeRates = () => {
-    console.log(type, focused);
-    if (type === InputTypeEnum.Change && focused) {
-      console.log('change');
+    console.log('type', type, focused, swapCurrencies);
+    if (type === InputTypeEnum.Change && (focused || swapCurrencies)) {
       dispatch(setChangeCurrencyAmount(inputValue));
       dispatchGetCurrencyAmount();
-      
+      dispatch(setSwapFalse());
     } else if (type === InputTypeEnum.Get && focused) {
       dispatch(setGetCurrencyAmount(inputValue));
-      console.log('Get');
       dispatchChangeCurrencyAmount();
     }
   };
@@ -369,7 +385,6 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
 
   useEffect(() => {
     if (type === InputTypeEnum.Change) {
-     
       showExchangeRates();
     }
     
@@ -382,6 +397,7 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
       setFocused(true);
       dispatch(setChangeCurrency(currency));
     } else if (type === InputTypeEnum.Get) {
+      dispatch(setFocusTrue());
       dispatch(setGetCurrency(currency));
     }
   };
@@ -392,7 +408,7 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
         <Typography>{type}</Typography>
         <TextField
           id={`${type}_input`}
-          error={false}
+          error={error ? true : false}
           value={inputValue}
           variant="outlined"
           onChange={(event) => setInputValue(event.target.value)}

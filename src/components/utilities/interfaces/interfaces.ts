@@ -29,3 +29,12 @@ export interface IExchange {
 export interface ICurrencyTableData {
   [name: string]: string;
 }
+
+export interface ISwapCurrencies {
+  swapCurrencies: ISwapCur;
+};
+
+export interface ISwapCur {
+  swapCurrencies: boolean;
+  focus: boolean;
+}

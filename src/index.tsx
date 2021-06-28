@@ -6,11 +6,13 @@ import reportWebVitals from "./reportWebVitals";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import currencySlice from "./store/currencySlice";
 import exchangeSlice from "./store/exchangeSlice";
+import swapCurrenciesSlice from './store/swapCurrenciesSlice';
 import { Provider } from "react-redux";
 
 const rootReducer = combineReducers({
   main: currencySlice,
   exchange: exchangeSlice,
+  swapCurrencies: swapCurrenciesSlice,
 });
 
 const store = configureStore({
