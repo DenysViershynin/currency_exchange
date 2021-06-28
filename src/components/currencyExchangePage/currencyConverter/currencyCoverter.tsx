@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Grid } from "@material-ui/core";
-import { useStyles } from "../../../styles/currencyConverter.styles";
+import { useStyles } from "../../../styles/CurrencyConverter.styles";
 import ChangeGetInput from "./changeGetInput";
 import ArrowIconComponent from './arrowIconComponent';
 import { InputTypeEnum } from "../../utilities/enums/enums";
