@@ -414,8 +414,9 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
   return (
     <Grid container className={classes.Inputs}>
       <Box>
-        <Typography>{type}</Typography>
+        <Typography className={classes.fonts}>{type}</Typography>
         <TextField
+          className={classes.root}
           id={`${type}_input`}
           error={error ? true : false}
           value={inputValue}
@@ -425,10 +426,9 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
       </Box>
       <FormControl className={classes.formControl}>
         <NativeSelect
+          className={classes.icon}
           onChange={handleChange}
           name="age"
-          className={classes.selectEmpty}
-          inputProps={{ "aria-label": "age" }}
         >
           <option value={type === InputTypeEnum.Get ? "USD" : "UAH"}>
             {type === InputTypeEnum.Get ? "USD" : "UAH"}

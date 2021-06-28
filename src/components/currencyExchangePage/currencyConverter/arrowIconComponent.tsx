@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
 import { setChangeCurrencyAmount } from "../../../store/exchangeSlice";
 import { setSwapTrue } from "../../../store/swapCurrenciesSlice";
+import { useStyles } from "../../../styles/arrowIcon.styles";
 
 interface IArrowIconComponent {
   changeCurrencyAmount: string;
@@ -13,14 +14,14 @@ const ArrowIconComponent: React.FC<IArrowIconComponent> = ({
   changeCurrencyAmount,
   getCurrencyAmount,
 }) => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const swapValues = () => {
-    console.log("clicked", changeCurrencyAmount, getCurrencyAmount);
     dispatch(setSwapTrue());
     dispatch(setChangeCurrencyAmount(getCurrencyAmount));
   };
 
-  return <CompareArrowsIcon fontSize="large" onClick={() => swapValues()} />;
+  return <CompareArrowsIcon fontSize="large" onClick={() => swapValues()} className={classes.arrowIcon} />;
 };
 
 export default ArrowIconComponent;

@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import { createStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(
   (theme: Theme) => ({
@@ -9,7 +9,9 @@ export const useStyles = makeStyles(
       width: '400px',
       justifyContent: "center",
       alignItems: "center",
-      border: "1px solid black",
+      backgroundColor: '#1d2733',
+      borderRadius: '6px',
+      boxShadow:' 5px 10px 20px #10171e',
     },
     formControl: {
       margin: theme.spacing(1),
@@ -18,7 +20,22 @@ export const useStyles = makeStyles(
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
-    
+    fonts: {
+      color: '#e9e9e9',
+    },
+    root: {
+      '& > *': {
+        color: '#e9e9e9',
+        backgroundColor: '#151e27',
+      },
+    },
+    icon: {
+      '& > *': {
+        color: '#5b54b2',
+        backgroundColor: '#151e27',
+        fontWeight: 'bold',
+      },
+    },
   }),
   {
     name: "Inputs",

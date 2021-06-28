@@ -11,7 +11,7 @@ import { useStyles } from "../../../styles/currencyTable.styles";
 import { DisplayEditIconEnum } from "../../utilities/enums/enums";
 import EditIconComponent from "./editIcon";
 import CurrentValue from "./currentValue";
-import { ICurrencyTableData } from '../../utilities/interfaces/interfaces';
+import { ICurrencyTableData } from "../../utilities/interfaces/interfaces";
 import {
   setUSD_buy,
   setUSD_sell,
@@ -27,7 +27,10 @@ interface ICurrencyTable {
   currencyTableDataOriginal: ICurrencyTableData;
 }
 
-const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableDataModified, currencyTableDataOriginal }) => {
+const CurrencyTable: React.FC<ICurrencyTable> = ({
+  currencyTableDataModified,
+  currencyTableDataOriginal,
+}) => {
   const {
     modified_usd_uah_buy,
     modified_usd_uah_sell,
@@ -125,7 +128,7 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableDataModified, cu
     let yyyy = today.getFullYear();
 
     return `${dd}.${mm}.${yyyy}`;
-  }
+  };
 
   const getCurrenceTableData: () => {
     currency: string;
@@ -133,8 +136,8 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableDataModified, cu
     sell: string;
     reducer_buy: (x: string) => void;
     reducer_sell: (x: string) => void;
-    originalBuyValue: string,
-    originalSellValue: string,
+    originalBuyValue: string;
+    originalSellValue: string;
   }[] = () => {
     const createData = (
       currency: string,
@@ -143,15 +146,47 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableDataModified, cu
       reducer_buy: (x: string) => void,
       reducer_sell: (x: string) => void,
       originalBuyValue: string,
-      originalSellValue: string,
+      originalSellValue: string
     ) => {
-      return { currency, buy, sell, reducer_buy, reducer_sell, originalBuyValue, originalSellValue };
+      return {
+        currency,
+        buy,
+        sell,
+        reducer_buy,
+        reducer_sell,
+        originalBuyValue,
+        originalSellValue,
+      };
     };
 
     const rows = [
-      createData("USD/UAH", modified_usd_uah_buy, modified_usd_uah_sell, setUSD_buy, setUSD_sell, usd_uah_buy, usd_uah_sell),
-      createData("EUR/UAH", modified_eur_uah_buy, modified_eur_uah_sell, setEUR_buy, setEUR_sell, eur_uah_buy, eur_uah_sell),
-      createData("BTC/USD", modified_btc_usd_buy, modified_btc_usd_sell, setBTC_buy, setBTC_sell, btc_usd_buy, btc_usd_sell),
+      createData(
+        "USD/UAH",
+        modified_usd_uah_buy,
+        modified_usd_uah_sell,
+        setUSD_buy,
+        setUSD_sell,
+        usd_uah_buy,
+        usd_uah_sell
+      ),
+      createData(
+        "EUR/UAH",
+        modified_eur_uah_buy,
+        modified_eur_uah_sell,
+        setEUR_buy,
+        setEUR_sell,
+        eur_uah_buy,
+        eur_uah_sell
+      ),
+      createData(
+        "BTC/USD",
+        modified_btc_usd_buy,
+        modified_btc_usd_sell,
+        setBTC_buy,
+        setBTC_sell,
+        btc_usd_buy,
+        btc_usd_sell
+      ),
     ];
     return rows;
   };
@@ -162,17 +197,34 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableDataModified, cu
         <Table size="medium" aria-label="currency-exchange">
           <TableHead>
             <TableRow>
-              <TableCell><Typography className={classes.secondaryFonts}>Currency / {getCurrentDate()}</Typography></TableCell>
-              <TableCell><Typography className={classes.secondaryFonts}>Buy</Typography></TableCell>
-              <TableCell><Typography className={classes.secondaryFonts}>Sell</Typography></TableCell>
+              <TableCell className={classes.tableCell}>
+                <Typography className={classes.secondaryFonts}>
+                  Currency / {getCurrentDate()}
+                </Typography>
+              </TableCell>
+              <TableCell className={classes.tableCell}>
+                <Typography className={classes.secondaryFonts}>Buy</Typography>
+              </TableCell>
+              <TableCell className={classes.tableCell}>
+                <Typography className={classes.secondaryFonts}>Sell</Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {getCurrenceTableData().map((row) => {
               return (
                 <TableRow key={row.currency}>
-                  <TableCell><Typography className={classes.secondaryFonts}>{row.currency}</Typography></TableCell>
-                  <TableCell className="editableCell">
+                  <TableCell>
+                    <Typography className={classes.secondaryFonts}>
+                      {row.currency}
+                    </Typography>
+                  </TableCell>
+                  <TableCell
+                    className="editableCell"
+                    style={{
+                      maxWidth: "70px",
+                    }}
+                  >
                     <CurrentValue
                       originalValue={row.originalBuyValue}
                       value={row.buy}
@@ -193,7 +245,12 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableDataModified, cu
                       }}
                     />
                   </TableCell>
-                  <TableCell className="editableCell">
+                  <TableCell
+                    className="editableCell"
+                    style={{
+                      maxWidth: "70px",
+                    }}
+                  >
                     <CurrentValue
                       originalValue={row.originalSellValue}
                       value={row.sell}
