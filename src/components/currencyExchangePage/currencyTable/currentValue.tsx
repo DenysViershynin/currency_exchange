@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 
 export interface ICurrentValue {
   value: string;
+  originalValue: string;
   showCurrencyInput: boolean;
   activateEventListeners: () => void;
   type: string;
@@ -20,6 +21,7 @@ const CurrentValue: React.FC<ICurrentValue> = ({
   activateEventListeners,
   type,
   reducer,
+  originalValue,
 }) => {
   const dispatch = useDispatch();
   value = value.replace(/0+$/, "");
@@ -41,8 +43,8 @@ const CurrentValue: React.FC<ICurrentValue> = ({
 
   useEffect(() => {
     if (
-      Number(inputValue) < Number(value) * 0.9 ||
-      Number(inputValue) > Number(value) * 1.1 ||
+      Number(inputValue) < Number(originalValue) * 0.9 ||
+      Number(inputValue) > Number(originalValue) * 1.1 ||
       /[^0-9.]/.test(inputValue)
     ) {
       setDisabledConfirmation(true);
@@ -54,9 +56,7 @@ const CurrentValue: React.FC<ICurrentValue> = ({
   const handleConfirmation = () => {
     setShowInput(false);
     activateEventListeners();
-   
     dispatch(reducer(inputValue));
-    
   };
 
   const handleCancelation = () => {

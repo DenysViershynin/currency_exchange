@@ -9,18 +9,24 @@ const initialState: ICurrencyState = {
     baseCurrency: "UAH",
     buy: "0",
     sell: "0",
+    usersModifiedBuy: '0',
+    usersModifiedSell: '0',
   },
   EUR: {
     currency: "EUR",
     baseCurrency: "UAH",
     buy: "0",
     sell: "0",
+    usersModifiedBuy: '0',
+    usersModifiedSell: '0',
   },
   BTC: {
     currency: "BTC",
     baseCurrency: "UAH",
     buy: "0",
     sell: "0",
+    usersModifiedBuy: '0',
+    usersModifiedSell: '0',
   },
 };
 
@@ -48,22 +54,22 @@ const currencySlice = createSlice({
   initialState,
   reducers: {
     setUSD_buy(state, { payload }) {
-      state.USD.buy = payload;
+      state.USD.usersModifiedBuy = payload;
     },
     setUSD_sell(state, { payload }) {
-      state.USD.sell = payload;
+      state.USD.usersModifiedSell = payload;
     },
     setEUR_buy(state, { payload }) {
-      state.EUR.buy = payload;
+      state.EUR.usersModifiedBuy = payload;
     },
     setEUR_sell(state, { payload }) {
-      state.EUR.sell = payload;
+      state.EUR.usersModifiedSell = payload;
     },
     setBTC_buy(state, { payload }) {
-      state.BTC.buy = payload;
+      state.BTC.usersModifiedBuy = payload;
     },
     setBTC_sell(state, { payload }) {
-      state.BTC.sell = payload;
+      state.BTC.usersModifiedSell = payload;
     },
   },
   extraReducers: {
@@ -74,6 +80,13 @@ const currencySlice = createSlice({
       state.EUR.sell = payload[1].sale;
       state.BTC.buy = payload[3].buy;
       state.BTC.sell = payload[3].sale;
+
+      state.USD.usersModifiedBuy = payload[0].buy;
+      state.USD.usersModifiedSell = payload[0].sale;
+      state.EUR.usersModifiedBuy = payload[1].buy;
+      state.EUR.usersModifiedSell = payload[1].sale;
+      state.BTC.usersModifiedBuy = payload[3].buy;
+      state.BTC.usersModifiedSell = payload[3].sale;
     },
   },
 });

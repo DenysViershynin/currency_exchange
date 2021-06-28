@@ -13,6 +13,8 @@ export interface ISeparateCurrencyState {
   baseCurrency: string;
   buy: string;
   sell: string;
+  usersModifiedBuy: string;
+  usersModifiedSell: string;
 }
 
 export interface ICurrencyExchange {

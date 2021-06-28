@@ -22,10 +22,20 @@ import {
 } from "../../../store/currencySlice";
 
 interface ICurrencyTable {
-  currencyTableData: ICurrencyTableData;
+  currencyTableDataModified: ICurrencyTableData;
+  currencyTableDataOriginal: ICurrencyTableData;
 }
 
-const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
+const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableDataModified, currencyTableDataOriginal }) => {
+  const {
+    modified_usd_uah_buy,
+    modified_usd_uah_sell,
+    modified_eur_uah_buy,
+    modified_eur_uah_sell,
+    modified_btc_usd_buy,
+    modified_btc_usd_sell,
+  } = currencyTableDataModified;
+
   const {
     usd_uah_buy,
     usd_uah_sell,
@@ -33,7 +43,7 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
     eur_uah_sell,
     btc_usd_buy,
     btc_usd_sell,
-  } = currencyTableData;
+  } = currencyTableDataOriginal;
 
   const [showCurrencyInput, setShowCurrencyInput] = useState<string[]>([
     "initial",
@@ -122,21 +132,25 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
     sell: string;
     reducer_buy: (x: string) => void;
     reducer_sell: (x: string) => void;
+    originalBuyValue: string,
+    originalSellValue: string,
   }[] = () => {
     const createData = (
       currency: string,
       buy: string,
       sell: string,
       reducer_buy: (x: string) => void,
-      reducer_sell: (x: string) => void
+      reducer_sell: (x: string) => void,
+      originalBuyValue: string,
+      originalSellValue: string,
     ) => {
-      return { currency, buy, sell, reducer_buy, reducer_sell };
+      return { currency, buy, sell, reducer_buy, reducer_sell, originalBuyValue, originalSellValue };
     };
 
     const rows = [
-      createData("USD/UAH", usd_uah_buy, usd_uah_sell, setUSD_buy, setUSD_sell),
-      createData("EUR/UAH", eur_uah_buy, eur_uah_sell, setEUR_buy, setEUR_sell),
-      createData("BTC/USD", btc_usd_buy, btc_usd_sell, setBTC_buy, setBTC_sell),
+      createData("USD/UAH", modified_usd_uah_buy, modified_usd_uah_sell, setUSD_buy, setUSD_sell, usd_uah_buy, usd_uah_sell),
+      createData("EUR/UAH", modified_eur_uah_buy, modified_eur_uah_sell, setEUR_buy, setEUR_sell, eur_uah_buy, eur_uah_sell),
+      createData("BTC/USD", modified_btc_usd_buy, modified_btc_usd_sell, setBTC_buy, setBTC_sell, btc_usd_buy, btc_usd_sell),
     ];
     return rows;
   };
@@ -159,6 +173,7 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
                   <TableCell>{row.currency}</TableCell>
                   <TableCell className="editableCell">
                     <CurrentValue
+                      originalValue={row.originalBuyValue}
                       value={row.buy}
                       showCurrencyInput={
                         `${row.currency}_Buy` === showCurrencyInput[0]
@@ -180,6 +195,7 @@ const CurrencyTable: React.FC<ICurrencyTable> = ({ currencyTableData }) => {
                   </TableCell>
                   <TableCell className="editableCell">
                     <CurrentValue
+                      originalValue={row.originalSellValue}
                       value={row.sell}
                       showCurrencyInput={
                         `${row.currency}_Sell` === showCurrencyInput[0]

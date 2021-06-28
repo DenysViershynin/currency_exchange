@@ -6,12 +6,12 @@ import CurrencyConverter from "./currencyConverter/currencyCoverter";
 import { useSelector, useDispatch } from "react-redux";
 import { IMainState } from "../utilities/interfaces/interfaces";
 import { useEffect } from "react";
-import { getData } from '../../store/currencySlice';
-import { ICurrencyTableData } from '../utilities/interfaces/interfaces';
+import { getData } from "../../store/currencySlice";
+import { ICurrencyTableData } from "../utilities/interfaces/interfaces";
 
 const CurrencyExchangePage = () => {
   const dispatch = useDispatch();
-    
+
   useEffect(() => {
     dispatch(getData());
   }, []);
@@ -23,7 +23,7 @@ const CurrencyExchangePage = () => {
   const btc_usd_buy = useSelector((state: IMainState) => state.main.BTC.buy);
   const btc_usd_sell = useSelector((state: IMainState) => state.main.BTC.sell);
 
-  const currencyTableData: ICurrencyTableData = {
+  const currencyTableDataOriginal: ICurrencyTableData = {
     usd_uah_buy: usd_uah_buy,
     usd_uah_sell: usd_uah_sell,
     eur_uah_buy: eur_uah_buy,
@@ -32,12 +32,43 @@ const CurrencyExchangePage = () => {
     btc_usd_sell: btc_usd_sell,
   };
 
+  const modified_usd_uah_buy = useSelector(
+    (state: IMainState) => state.main.USD.usersModifiedBuy
+  );
+  const modified_usd_uah_sell = useSelector(
+    (state: IMainState) => state.main.USD.usersModifiedSell
+  );
+  const modified_eur_uah_buy = useSelector(
+    (state: IMainState) => state.main.EUR.usersModifiedBuy
+  );
+  const modified_eur_uah_sell = useSelector(
+    (state: IMainState) => state.main.EUR.usersModifiedSell
+  );
+  const modified_btc_usd_buy = useSelector(
+    (state: IMainState) => state.main.BTC.usersModifiedBuy
+  );
+  const modified_btc_usd_sell = useSelector(
+    (state: IMainState) => state.main.BTC.usersModifiedSell
+  );
+
+  const currencyTableDataModified: ICurrencyTableData = {
+    modified_usd_uah_buy: modified_usd_uah_buy,
+    modified_usd_uah_sell: modified_usd_uah_sell,
+    modified_eur_uah_buy: modified_eur_uah_buy,
+    modified_eur_uah_sell: modified_eur_uah_sell,
+    modified_btc_usd_buy: modified_btc_usd_buy,
+    modified_btc_usd_sell: modified_btc_usd_sell,
+  };
+
   const classes = useStyles();
 
   return (
     <Grid container className={classes.currencyExchangePageWrapper}>
-      <CurrencyTable currencyTableData={currencyTableData} />
-      <CurrencyConverter currencyTableData={currencyTableData} />
+      <CurrencyTable
+        currencyTableDataModified={currencyTableDataModified}
+        currencyTableDataOriginal={currencyTableDataOriginal}
+      />
+      <CurrencyConverter currencyTableData={currencyTableDataModified} />
     </Grid>
   );
 };

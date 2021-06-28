@@ -13,7 +13,7 @@ import {
   setChangeCurrency,
 } from "../../../store/exchangeSlice";
 import { ICurrencyTableData } from "../../utilities/interfaces/interfaces";
-import { setSwapFalse, setFocusTrue } from '../../../store/swapCurrenciesSlice'
+import { setSwapFalse, setFocusTrue, setFocusFalse } from '../../../store/swapCurrenciesSlice'
 
 interface IChangeGetInput {
   type: string;
@@ -37,12 +37,12 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
   focusValue,
 }) => {
   const {
-    usd_uah_buy,
-    usd_uah_sell,
-    eur_uah_buy,
-    eur_uah_sell,
-    btc_usd_buy,
-    btc_usd_sell,
+    modified_usd_uah_buy,
+    modified_usd_uah_sell,
+    modified_eur_uah_buy,
+    modified_eur_uah_sell,
+    modified_btc_usd_buy,
+    modified_btc_usd_sell,
   } = currencyTableData;
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -50,6 +50,16 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
   const [inputValue, setInputValue] = useState<string>("");
   const [focused, setFocused] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+
+  useEffect(() => {
+    if(type === InputTypeEnum.Change) {
+      if(focusValue) {
+        setFocused(true);
+      } else if(focusValue === false) {
+        setFocused(false);
+      }
+    }
+  }, [focusValue])
 
   useEffect(() => {
     if (/[^0-9.]/.test(inputValue)) {
@@ -67,14 +77,13 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
     }
   }, [getCurrency, changeCurrency])
 
-  useEffect(() => {
-    if(type === InputTypeEnum.Change && focusValue) {
-      setFocused(true);
-    }
-  }, [focusValue])
+  
 
   const onFocus = useCallback(() => {
     setFocused(true);
+    if(type === InputTypeEnum.Get) {
+      dispatch(setFocusFalse());
+    }
   }, [])
 
   const onBlur = useCallback(() => {
@@ -118,51 +127,51 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
     if (
       chosenCurrency === "UAH" &&
       getCurrency === "USD" &&
-      usd_uah_buy !== "0"
+      modified_usd_uah_buy !== "0"
     ) {
       let CurrencyAmount =
-        (Number(inputValue) / Number(usd_uah_buy)).toFixed(2) + "";
+        (Number(inputValue) / Number(modified_usd_uah_buy)).toFixed(2) + "";
       dispatch(setGetCurrencyAmount(CurrencyAmount));
     } else if (
       chosenCurrency === "USD" &&
       getCurrency === "UAH" &&
-      usd_uah_sell !== "0"
+      modified_usd_uah_sell !== "0"
     ) {
       let CurrencyAmount =
-        (Number(inputValue) * Number(usd_uah_sell)).toFixed(2) + "";
+        (Number(inputValue) * Number(modified_usd_uah_sell)).toFixed(2) + "";
       dispatch(setGetCurrencyAmount(CurrencyAmount));
     }
     if (
       chosenCurrency === "UAH" &&
       getCurrency === "EUR" &&
-      eur_uah_buy !== "0"
+      modified_eur_uah_buy !== "0"
     ) {
       let CurrencyAmount =
-        (Number(inputValue) / Number(eur_uah_buy)).toFixed(2) + "";
+        (Number(inputValue) / Number(modified_eur_uah_buy)).toFixed(2) + "";
       dispatch(setGetCurrencyAmount(CurrencyAmount));
     } else if (
       chosenCurrency === "EUR" &&
       getCurrency === "UAH" &&
-      eur_uah_sell !== "0"
+      modified_eur_uah_sell !== "0"
     ) {
       let CurrencyAmount =
-        (Number(inputValue) * Number(eur_uah_sell)).toFixed(2) + "";
+        (Number(inputValue) * Number(modified_eur_uah_sell)).toFixed(2) + "";
       dispatch(setGetCurrencyAmount(CurrencyAmount));
     } else if (
       chosenCurrency === "BTC" &&
       getCurrency === "USD" &&
-      btc_usd_sell !== "0"
+      modified_btc_usd_sell !== "0"
     ) {
       let CurrencyAmount =
-        (Number(inputValue) * Number(btc_usd_sell)).toFixed(6) + "";
+        (Number(inputValue) * Number(modified_btc_usd_sell)).toFixed(2) + "";
       dispatch(setGetCurrencyAmount(CurrencyAmount));
     } else if (
       chosenCurrency === "USD" &&
       getCurrency === "BTC" &&
-      btc_usd_buy !== "0"
+      modified_btc_usd_buy !== "0"
     ) {
       let CurrencyAmount =
-        (Number(inputValue) / Number(btc_usd_buy)).toFixed(6) + "";
+        (Number(inputValue) / Number(modified_btc_usd_buy)).toFixed(6) + "";
       dispatch(setGetCurrencyAmount(CurrencyAmount));
     } else if (chosenCurrency === "UAH" && getCurrency === "UAH") {
       let CurrencyAmount = Number(inputValue).toFixed(2) + "";
@@ -179,64 +188,64 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
     } else if (
       chosenCurrency === "UAH" &&
       getCurrency === "BTC" &&
-      btc_usd_buy !== "0"
+      modified_btc_usd_buy !== "0"
     ) {
       let amountInUSD =
-        (Number(inputValue) / Number(usd_uah_buy)).toFixed(2) + "";
+        (Number(inputValue) / Number(modified_usd_uah_buy)).toFixed(2) + "";
       let amountInBTC =
-        (Number(amountInUSD) / Number(btc_usd_buy)).toFixed(6) + "";
+        (Number(amountInUSD) / Number(modified_btc_usd_buy)).toFixed(6) + "";
       dispatch(setGetCurrencyAmount(amountInBTC));
     } else if (
       chosenCurrency === "BTC" &&
       getCurrency === "UAH" &&
-      btc_usd_buy !== "0"
+      modified_btc_usd_buy !== "0"
     ) {
-      let amountInUSD = Number(inputValue) * Number(btc_usd_sell) + "";
-      let amountInUAH = Number(amountInUSD) * Number(usd_uah_sell) + "";
+      let amountInUSD = (Number(inputValue) * Number(modified_btc_usd_sell)).toFixed(2)  + "";
+      let amountInUAH = (Number(amountInUSD) * Number(modified_usd_uah_sell)).toFixed(2)  + "";
       dispatch(setGetCurrencyAmount(amountInUAH));
     } else if (
       chosenCurrency === "EUR" &&
       getCurrency === "USD" &&
-      usd_uah_sell !== "0"
+      modified_usd_uah_sell !== "0"
     ) {
       let amountInUAH =
-        (Number(inputValue) * Number(eur_uah_sell)).toFixed(2) + "";
+        (Number(inputValue) * Number(modified_eur_uah_sell)).toFixed(2) + "";
       let amountInUSD =
-        (Number(amountInUAH) / Number(usd_uah_buy)).toFixed(2) + "";
+        (Number(amountInUAH) / Number(modified_usd_uah_buy)).toFixed(2) + "";
       dispatch(setGetCurrencyAmount(amountInUSD));
     } else if (
       chosenCurrency === "USD" &&
       getCurrency === "EUR" &&
-      usd_uah_sell !== "0"
+      modified_usd_uah_sell !== "0"
     ) {
       let amountInUAH =
-        (Number(inputValue) * Number(usd_uah_sell)).toFixed(2) + "";
+        (Number(inputValue) * Number(modified_usd_uah_sell)).toFixed(2) + "";
       let amountInEUR =
-        (Number(amountInUAH) / Number(eur_uah_buy)).toFixed(2) + "";
+        (Number(amountInUAH) / Number(modified_eur_uah_buy)).toFixed(2) + "";
       dispatch(setGetCurrencyAmount(amountInEUR));
     } else if (
       chosenCurrency === "EUR" &&
       getCurrency === "BTC" &&
-      eur_uah_sell !== "0"
+      modified_eur_uah_sell !== "0"
     ) {
       let amountInUAH =
-        (Number(inputValue) * Number(eur_uah_sell)).toFixed(2) + "";
+        (Number(inputValue) * Number(modified_eur_uah_sell)).toFixed(2) + "";
       let amountInUSD =
-        (Number(amountInUAH) / Number(usd_uah_buy)).toFixed(2) + "";
+        (Number(amountInUAH) / Number(modified_usd_uah_buy)).toFixed(2) + "";
       let amountInBTC =
-        (Number(amountInUSD) / Number(btc_usd_buy)).toFixed(6) + "";
+        (Number(amountInUSD) / Number(modified_btc_usd_buy)).toFixed(6) + "";
       dispatch(setGetCurrencyAmount(amountInBTC));
     } else if (
       chosenCurrency === "BTC" &&
       getCurrency === "EUR" &&
-      btc_usd_sell !== "0"
+      modified_btc_usd_sell !== "0"
     ) {
       let amountInUSD =
-        (Number(inputValue) * Number(btc_usd_sell)).toFixed(2) + "";
+        (Number(inputValue) * Number(modified_btc_usd_sell)).toFixed(2) + "";
       let amountInUAH =
-        (Number(amountInUSD) * Number(usd_uah_sell)).toFixed(2) + "";
+        (Number(amountInUSD) * Number(modified_usd_uah_sell)).toFixed(2) + "";
       let amountInEUR =
-        (Number(amountInUAH) / Number(eur_uah_buy)).toFixed(6) + "";
+        (Number(amountInUAH) / Number(modified_eur_uah_buy)).toFixed(6) + "";
       dispatch(setGetCurrencyAmount(amountInEUR));
     }
   }
@@ -245,50 +254,50 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
     if (
       chosenCurrency === "UAH" &&
       changeCurrency === "USD" &&
-      usd_uah_sell !== "0"
+      modified_usd_uah_sell !== "0"
     ) {
       let CurrencyAmount =
-        (Number(inputValue) / Number(usd_uah_sell)).toFixed(2) + "";
+        (Number(inputValue) / Number(modified_usd_uah_sell)).toFixed(2) + "";
       dispatch(setChangeCurrencyAmount(CurrencyAmount));
     } else if (
       chosenCurrency === "USD" &&
       changeCurrency === "UAH" &&
-      usd_uah_buy !== "0"
+      modified_usd_uah_buy !== "0"
     ) {
       let CurrencyAmount =
-        (Number(inputValue) * Number(usd_uah_buy)).toFixed(2) + "";
+        (Number(inputValue) * Number(modified_usd_uah_buy)).toFixed(2) + "";
       dispatch(setChangeCurrencyAmount(CurrencyAmount));
     } else if (
       chosenCurrency === "UAH" &&
       changeCurrency === "EUR" &&
-      eur_uah_sell !== "0"
+      modified_eur_uah_sell !== "0"
     ) {
       let CurrencyAmount =
-        (Number(inputValue) / Number(eur_uah_sell)).toFixed(2) + "";
+        (Number(inputValue) / Number(modified_eur_uah_sell)).toFixed(2) + "";
       dispatch(setChangeCurrencyAmount(CurrencyAmount));
     } else if (
       chosenCurrency === "EUR" &&
       changeCurrency === "UAH" &&
-      eur_uah_buy !== "0"
+      modified_eur_uah_buy !== "0"
     ) {
       let CurrencyAmount =
-        (Number(inputValue) * Number(eur_uah_buy)).toFixed(2) + "";
+        (Number(inputValue) * Number(modified_eur_uah_buy)).toFixed(2) + "";
       dispatch(setChangeCurrencyAmount(CurrencyAmount));
     } else if (
       chosenCurrency === "BTC" &&
       changeCurrency === "USD" &&
-      btc_usd_buy !== "0"
+      modified_btc_usd_buy !== "0"
     ) {
       let CurrencyAmount =
-        (Number(inputValue) * Number(btc_usd_buy)).toFixed(6) + "";
+        (Number(inputValue) * Number(modified_btc_usd_buy)).toFixed(6) + "";
       dispatch(setChangeCurrencyAmount(CurrencyAmount));
     } else if (
       chosenCurrency === "USD" &&
       changeCurrency === "BTC" &&
-      btc_usd_sell !== "0"
+      modified_btc_usd_sell !== "0"
     ) {
       let CurrencyAmount =
-        (Number(inputValue) / Number(btc_usd_sell)).toFixed(6) + "";
+        (Number(inputValue) / Number(modified_btc_usd_sell)).toFixed(6) + "";
       dispatch(setChangeCurrencyAmount(CurrencyAmount));
     } else if (chosenCurrency === "UAH" && changeCurrency === "UAH") {
       let CurrencyAmount = Number(inputValue).toFixed(2) + "";
@@ -305,75 +314,76 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
     } else if (
       chosenCurrency === "UAH" &&
       changeCurrency === "BTC" &&
-      btc_usd_buy !== "0"
+      modified_btc_usd_buy !== "0"
     ) {
       let amountInUSD =
-        (Number(inputValue) / Number(usd_uah_buy)).toFixed(2) + "";
+        (Number(inputValue) / Number(modified_usd_uah_buy)).toFixed(2) + "";
       let amountInBTC =
-        (Number(amountInUSD) / Number(btc_usd_buy)).toFixed(6) + "";
+        (Number(amountInUSD) / Number(modified_btc_usd_buy)).toFixed(6) + "";
       dispatch(setChangeCurrencyAmount(amountInBTC));
     } else if (
       chosenCurrency === "BTC" &&
       changeCurrency === "UAH" &&
-      btc_usd_buy !== "0"
+      modified_btc_usd_buy !== "0"
     ) {
-      let amountInUSD = (Number(inputValue) * Number(btc_usd_sell)).toFixed(2) + "";
-      let amountInUAH = (Number(amountInUSD) * Number(usd_uah_sell)).toFixed(2) + "";
+      let amountInUSD = (Number(inputValue) * Number(modified_btc_usd_sell)).toFixed(2) + "";
+      let amountInUAH = (Number(amountInUSD) * Number(modified_usd_uah_sell)).toFixed(2) + "";
       dispatch(setChangeCurrencyAmount(amountInUAH));
     } else if (
       chosenCurrency === "EUR" &&
       changeCurrency === "USD" &&
-      usd_uah_sell !== "0"
+      modified_usd_uah_sell !== "0"
     ) {
       let amountInUAH =
-        (Number(inputValue) * Number(eur_uah_sell)).toFixed(2) + "";
+        (Number(inputValue) * Number(modified_eur_uah_sell)).toFixed(2) + "";
       let amountInUSD =
-        (Number(amountInUAH) / Number(usd_uah_buy)).toFixed(2) + "";
+        (Number(amountInUAH) / Number(modified_usd_uah_buy)).toFixed(2) + "";
       dispatch(setChangeCurrencyAmount(amountInUSD));
     } else if (
       chosenCurrency === "USD" &&
       changeCurrency === "EUR" &&
-      usd_uah_sell !== "0"
+      modified_usd_uah_sell !== "0"
     ) {
       let amountInUAH =
-        (Number(inputValue) * Number(usd_uah_sell)).toFixed(2) + "";
+        (Number(inputValue) * Number(modified_usd_uah_sell)).toFixed(2) + "";
       let amountInEUR =
-        (Number(amountInUAH) / Number(eur_uah_buy)).toFixed(2) + "";
+        (Number(amountInUAH) / Number(modified_eur_uah_buy)).toFixed(2) + "";
       dispatch(setChangeCurrencyAmount(amountInEUR));
     } else if (
       chosenCurrency === "EUR" &&
       changeCurrency === "BTC" &&
-      eur_uah_sell !== "0"
+      modified_eur_uah_sell !== "0"
     ) {
       let amountInUAH =
-        (Number(inputValue) * Number(eur_uah_sell)).toFixed(2) + "";
+        (Number(inputValue) * Number(modified_eur_uah_sell)).toFixed(2) + "";
       let amountInUSD =
-        (Number(amountInUAH) / Number(usd_uah_buy)).toFixed(2) + "";
+        (Number(amountInUAH) / Number(modified_usd_uah_buy)).toFixed(2) + "";
       let amountInBTC =
-        (Number(amountInUSD) / Number(btc_usd_buy)).toFixed(6) + "";
+        (Number(amountInUSD) / Number(modified_btc_usd_buy)).toFixed(6) + "";
       dispatch(setChangeCurrencyAmount(amountInBTC));
     } else if (
       chosenCurrency === "BTC" &&
       changeCurrency === "EUR" &&
-      btc_usd_sell !== "0"
+      modified_btc_usd_sell !== "0"
     ) {
       let amountInUSD =
-        (Number(inputValue) * Number(btc_usd_sell)).toFixed(2) + "";
+        (Number(inputValue) * Number(modified_btc_usd_sell)).toFixed(2) + "";
       let amountInUAH =
-        (Number(amountInUSD) * Number(usd_uah_sell)).toFixed(2) + "";
+        (Number(amountInUSD) * Number(modified_usd_uah_sell)).toFixed(2) + "";
       let amountInEUR =
-        (Number(amountInUAH) / Number(eur_uah_buy)).toFixed(6) + "";
+        (Number(amountInUAH) / Number(modified_eur_uah_buy)).toFixed(6) + "";
       dispatch(setChangeCurrencyAmount(amountInEUR));
     }
   }
 
   const showExchangeRates = () => {
-    console.log('type', type, focused, swapCurrencies);
     if (type === InputTypeEnum.Change && (focused || swapCurrencies)) {
       dispatch(setChangeCurrencyAmount(inputValue));
       dispatchGetCurrencyAmount();
       dispatch(setSwapFalse());
+      dispatch(setFocusFalse());
     } else if (type === InputTypeEnum.Get && focused) {
+      // dispatch(setFocusFalse());
       dispatch(setGetCurrencyAmount(inputValue));
       dispatchChangeCurrencyAmount();
     }
@@ -381,13 +391,12 @@ const ChangeGetInput: React.FC<IChangeGetInput> = ({
 
   useEffect(() => {
     showExchangeRates();
-  }, [inputValue, getCurrency, changeCurrency]);
+  }, [inputValue, getCurrency, changeCurrency, focused]);
 
   useEffect(() => {
     if (type === InputTypeEnum.Change) {
       showExchangeRates();
     }
-    
   }, [chosenCurrency]);
 
   const handleChange = (event: React.ChangeEvent<{ value: string }>) => {
